@@ -5,8 +5,21 @@ public class Horario {
         return hora;
     }
 
+    public void setHora(int hora) {
+        this.hora = hora;
+    }
+
     public int getMinuto() {
         return minuto;
+    }
+
+    public void setMinuto(int minuto) {
+        this.minuto = minuto;
+    }
+
+    public Horario(int hora, int minuto) {
+        setHora(hora);
+        setMinuto(minuto);
     }
 
     public String toString() {

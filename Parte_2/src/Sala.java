@@ -1,18 +1,17 @@
-public class Sala {
+public class Sala extends Espaco{
     private boolean projetor;
-    private double precoProjetor;
+    private static double precoProjetor;
 
     public String toString() {
         return "Sala{}";
     }
 
     public double preco(Horario inicio, Horario fim) {
-
-        return 0;
+        return super.preco(inicio, fim) + precoProjetor;
     }
 
     public boolean possuiAdicional() {
 
-        return false;
+        return true;
     }
 }

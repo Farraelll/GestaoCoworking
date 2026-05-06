@@ -1,18 +1,16 @@
-public class Estacao {
+public class Estacao extends Espaco{
     private boolean monitorExtra;
-    private double precoMonitor;
+    private static double precoMonitor;
 
     public boolean isMonitorExtra() {
         return monitorExtra;
     }
 
     public double preco(Horario inicio, Horario fim) {
-
-        return 0;
+        return super.preco(inicio, fim) + precoMonitor;
     }
 
     public boolean possuiAdicional() {
-
-        return false;
+        return this.monitorExtra;
     }
 }

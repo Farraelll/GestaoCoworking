@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Espaco {
     protected String descricao;
-    protected double valorHora, taxaLimpeza;
+    protected static double valorHora, taxaLimpeza;
     protected ArrayList<Reserva> reservas = new ArrayList<>();
 
     public double getValorHora() {
@@ -16,6 +16,8 @@ public class Espaco {
     public String toString() {
         return "Espaco{}";
     }
+
+
 
     public boolean disponivel(Data d, Horario inicio, Horario fim, boolean extra) {
 

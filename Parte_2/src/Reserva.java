@@ -9,7 +9,6 @@ public class Reserva {
     }
 
     public double preco() {
-        return 0;
+        return esp.preco();
     }
-
 }

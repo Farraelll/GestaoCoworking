@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
-
-
 /**
  * Classe com as rotinas de entrada e saída do projeto
  * @author Hilario Seibel Junior e <seu nome aqui>
@@ -56,6 +54,16 @@ public class Entrada {
         // Imprime uma mensagem ao usuário, lê uma linha contendo um inteiro e retorna este inteiro
         String linha = this.lerLinha(msg);
         return Integer.parseInt(linha);
+    }
+
+    public Horario lerHorario(String msg) {
+        String linha = this.lerLinha(msg);
+        String[] partes = linha.split(":");
+
+        int hora = 0;
+        int minuto = 0;
+
+        return new Horario(hora, minuto);
     }
 
     /**
