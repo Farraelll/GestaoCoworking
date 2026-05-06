@@ -1,8 +1,5 @@
 public class Cliente {
-    private String nome;
-    private String cpf;
-    private String email;
-    private String senha;
+    private String nome, cpf, email, senha;
 
     public Cliente(String nome, String cpf, String email, String senha) {
         this.setNome(nome);
@@ -35,15 +32,10 @@ public class Cliente {
         this.email = email;
     }
 
-    public String getSenha() {
-        return senha;
-    }
-
     public void setSenha(String senha) {
         this.senha = senha;
     }
 
-    @Override
     public String toString() {
         return this.nome + " (" + this.email + " - CPF: " + this.cpf + ")";
     }
