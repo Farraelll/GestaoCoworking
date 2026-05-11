@@ -23,7 +23,7 @@ public class Horario {
     }
 
     public String toString() {
-        return this.getHora() + ":" + this.getMinuto();
+    return String.format("%02d:%02d", hora, minuto);
     }
 
     public int compara(Horario h2) {

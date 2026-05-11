@@ -1,23 +1,41 @@
 public class Data {
-    private int dia, mes, ano;
+	private int dia, mes, ano;
 
-    public int getDia() {
-        return dia;
-    }
+	public Data(int dia, int mes, int ano) {
+		this.setDia(dia);
+		this.setMes(mes);
+		this.setAno(ano);
+	}
 
-    public int getMes() {
-        return mes;
-    }
+	public int getDia() {
+		return dia;
+	}
 
-    public int getAno() {
-        return ano;
-    }
+	public void setDia(int dia) {
+		this.dia = dia;
+	}
 
-    public String toString() {
-        return dia + "/" + mes + "/" + ano;
-    }
+	public int getMes() {
+		return mes;
+	}
 
-    public boolean equals(Data d2) {
-        return getDia() == d2.getDia() && getMes() == d2.getMes() && getAno() == d2.getAno();
-    }
+	public void setMes(int mes) {
+		this.mes = mes;
+	}
+
+	public int getAno() {
+		return ano;
+	}
+
+	public void setAno(int ano) {
+		this.ano = ano;
+	}
+
+	public String toString() {
+		return String.format("%02d/%02d/%04d", dia, mes, ano);
+	}
+
+	public boolean equals(Data d2) {
+		return getDia() == d2.getDia() && getMes() == d2.getMes() && getAno() == d2.getAno();
+	}
 }
