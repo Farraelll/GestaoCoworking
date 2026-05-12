@@ -44,10 +44,13 @@ public class Espaco {
 	}
 
 	public boolean disponivel(Data d, Horario inicio, Horario fim, boolean extra) {
-		if (!possuiAdicional()) {return false;}
+		if (!possuiAdicional() && extra) return false;
 
-
-
+		for (Reserva r : this.getReservas()) {
+			if (r.getData() == d) {
+				if (!(inicio.compara(r.getInicio()) + fim.compara(r.getFim()) == 2 || inicio.compara(r.getInicio()) + fim.compara(r.getFim()) == -2)) return false;
+			}
+		}
 		return true;
 	}
 

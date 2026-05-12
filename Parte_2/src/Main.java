@@ -15,6 +15,4 @@ void main() {
         }
         op = e.menu();
     }
-
-    //e.fechar();
 }

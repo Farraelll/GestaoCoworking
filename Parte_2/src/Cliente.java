@@ -42,7 +42,6 @@ public class Cliente {
 
 	public boolean equals(Object o) {
 		if (!(o instanceof Cliente cliente)) return false;
-
 		return getCpf().equals(cliente.getCpf());
 	}
 }

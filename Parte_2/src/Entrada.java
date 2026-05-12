@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
-/**
- * Classe com as rotinas de entrada e saída do projeto
+/** Classe com as rotinas de entrada e saída do projeto
  * @author Hilario Seibel Junior, Rafael Marques Silva e Ilanna dos Reis Cardoso
  */
 

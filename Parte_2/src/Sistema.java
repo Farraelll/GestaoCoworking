@@ -5,7 +5,6 @@ public class Sistema {
 	private ArrayList<Espaco> estacoes = new ArrayList<>();
 	private ArrayList<Espaco> salas = new ArrayList<>();
 
-
 	public Sistema(double valorHora, double taxaLimpeza, double precoProjetor, double precoMonitor) {
 		this.clientes = new ArrayList<>();
 
@@ -67,12 +66,10 @@ public class Sistema {
 	    return false;
 	}
 
-	// reservar o dia inteiro
 	public boolean reservar(String tipo, Data d, Cliente c, boolean extra) {
 		return reservar(tipo, d, new Horario(8, 0), new Horario(22, 0), c, extra);
 	}
 
-	// reservar um turno
 	public boolean reservar(String tipo, Data d, String turno, Cliente c, boolean extra) {
 	    Horario inicio = null;
 		Horario fim = null;
