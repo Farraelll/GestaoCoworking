@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class Espaco {
 	protected String descricao;
 	protected static double valorHora, taxaLimpeza;
+
 	protected ArrayList<Reserva> reservas = new ArrayList<>();
 
 	public String getDescricao() {
