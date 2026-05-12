@@ -5,7 +5,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 /** Classe com as rotinas de entrada e saída do projeto
- * @author Hilario Seibel Junior, Rafael Marques Silva e Ilanna dos Reis Cardoso
+ * @authors Hilario Seibel Junior, Rafael Marques Silva e Ilanna dos Reis Cardoso
  */
 
 public class Entrada {
@@ -18,7 +18,7 @@ public class Entrada {
 	 */
 	public Entrada() {
 		try {
-			this.input = new Scanner(new FileInputStream("input.txt")).useLocale(Locale.US);
+			this.input = new Scanner(new FileInputStream("input2.txt")).useLocale(Locale.US);
 		} catch (FileNotFoundException e) {
 			this.input = new Scanner(System.in).useLocale(Locale.US);
 		}
