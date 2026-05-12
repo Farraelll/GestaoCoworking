@@ -3,7 +3,6 @@ import java.util.ArrayList;
 public class Espaco {
 	protected String descricao;
 	protected static double valorHora, taxaLimpeza;
-
 	protected ArrayList<Reserva> reservas = new ArrayList<>();
 
 	public String getDescricao() {
@@ -48,7 +47,7 @@ public class Espaco {
 		if (!possuiAdicional() && extra) return false;
 
 		for (Reserva r : this.getReservas()) {
-			if (r.getData() == d) {
+			if (r.getData().equals(d)) {
 				if (!(inicio.compara(r.getInicio()) + fim.compara(r.getFim()) == 2 || inicio.compara(r.getInicio()) + fim.compara(r.getFim()) == -2)) return false;
 			}
 		}
