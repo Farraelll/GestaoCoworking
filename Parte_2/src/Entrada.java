@@ -67,14 +67,9 @@ public class Entrada {
 		return new Horario(hora, minuto);
 	}
 
-	public boolean lerExtra(String tipo) {
-		boolean extra;
-		if (tipo.equalsIgnoreCase("e")) {
-			extra = this.lerExtra("Deseja reservar uma estacao com monitor extra? (s/n): ");
-		} else {
-			extra = this.lerExtra("Deseja reservar sala com projetor? (s/n): ");
-		}
-		return extra;
+	private boolean lerExtra(String msg) {
+	    String linha = this.lerLinha(msg);
+	    return Character.toLowerCase(linha.charAt(0)) == 's';
 	}
 
 	public String lerTipo(Sistema s) {
@@ -230,7 +225,7 @@ public class Entrada {
 			System.out.println("Nenhuma estação cadastrada");
 		}
 		else {
-			System.out.println("Estações de Trabalho cadastradas: ");
+			System.out.println("Estacoes de Trabalho cadastradas:");
 			for (Espaco e : estacoes) {
 				System.out.println(e);
 			}
@@ -244,10 +239,10 @@ public class Entrada {
 		if(reservas.isEmpty()) {
 			System.out.println("Nenhuma reserva cadastrada");
 		} else {
-			System.out.println("Reservas Cadastradas: ");
-			for (Reserva e : reservas) {
+			System.out.println("Reservas cadastradas:");
+			for (Reserva r : reservas) {
 				System.out.println("Reserva: ");
-				System.out.println(e);
+				System.out.println(r);
 			}
 		}
 
@@ -261,25 +256,34 @@ public class Entrada {
 		if(reservas.isEmpty()) {
 			System.out.println("Nenhuma reserva cadastrada");
 		} else {
-			System.out.println("Reservas Cadastradas nesta data: ");
-			for (Reserva e : reservas) {
+			System.out.println("Reservas cadastradas nesta data:");
+			for (Reserva r : reservas) {
 				System.out.println("Reserva: ");
-				System.out.println(e);
+				System.out.println(r);
 			}
 		}
 	}
 
 	public void listarReservasCliente(Sistema s) {
-		this.listarClientes(s);
+	    this.listarClientes(s);
+	    String cpf = this.lerLinha("Digite o CPF do cliente: ");
+	    Cliente c = s.getCliente(cpf);
 
-		String cpf = this.lerLinha("Digite o CPF do cliente: ");
-		ArrayList<Reserva> reservas = s.getReservas(s.getCliente(cpf));
+	    if (c == null) {
+	        System.out.println("Cliente não encontrado.");
+	        return;
+	    }
+	    ArrayList<Reserva> reservas = s.getReservas(c);
 
-		System.out.println("Reservas Cadastradas para este cliente: ");
-		for (Reserva e : reservas) {
-			System.out.println("Reserva: ");
-			System.out.println(e);
-		}
+	    if (reservas.isEmpty()) {
+	        System.out.println("Nenhuma reserva cadastrada para este cliente.");
+	    } else {
+	        System.out.println("Reservas cadastradas para este cliente:");
+	        for (Reserva r : reservas) {
+	            System.out.println("Reserva: ");
+	            System.out.println(r);
+	        }
+	    }
 	}
 
 	public void cadastrarCliente(Sistema s) {
@@ -302,7 +306,7 @@ public class Entrada {
 		System.out.println("Cadastrando sala.");
 		String descricao = this.lerLinha("Digite o nome da sala: ");
 		boolean extra = this.lerExtra("Possui projetor? (s/n): ");
-		
+
 		s.cadastrar(new Sala(descricao, extra));
 	}
 
@@ -312,7 +316,7 @@ public class Entrada {
 		System.out.println("Cadastrando estação");
 		String descricao = this.lerLinha("Digite o nome da estação de trabalho: ");
 		boolean extra = this.lerExtra("Possui monitor extra? (s/n): ");
-		
+
 		s.cadastrar(new Estacao(descricao, extra));
 	}
 
@@ -350,33 +354,46 @@ public class Entrada {
 	}
 
 	public void reservarData(Sistema s) {
-		String tipo = this.lerTipo(s);
-		boolean extra = lerExtra(tipo);
-		System.out.println("Escolha uma data: ");
-		Data d = lerData(s);
-
-		realizarReserva(s, tipo, extra, d);
+	    String tipo = this.lerTipo(s);
+	    boolean extra;
+	    if (tipo.equalsIgnoreCase("e")) {
+	        extra = this.lerExtra("Deseja reservar uma estacao com monitor extra? (s/n): ");
+	    } else {
+	        extra = this.lerExtra("Deseja reservar sala com projetor? (s/n): ");
+	    }
+	    System.out.println("Escolha uma data: ");
+	    Data d = lerData(s);
+	    realizarReserva(s, tipo, extra, d);
 	}
 
 	public void reservarTurno(Sistema s) {
-		String tipo = this.lerTipo(s);
-		boolean extra = lerExtra(tipo);
-		System.out.println("Escolha uma data: ");
-		Data d = this.lerData(s);
-		String turno = this.lerLinha("Escolha um turno: matutino, vespertino ou noturno (m/v/n): ");
-		realizarReserva(s, tipo, extra, d, turno);
+	    String tipo = this.lerTipo(s);
+	    boolean extra;
+	    if (tipo.equalsIgnoreCase("e")) {
+	        extra = this.lerExtra("Deseja reservar uma estacao com monitor extra? (s/n): ");
+	    } else {
+	        extra = this.lerExtra("Deseja reservar sala com projetor? (s/n): ");
+	    }
+	    System.out.println("Escolha uma data: ");
+	    Data d = this.lerData(s);
+	    String turno = this.lerLinha("Escolha um turno: matutino, vespertino ou noturno (m/v/n): ");
+	    realizarReserva(s, tipo, extra, d, turno);
 	}
 
 	public void reservarHorario(Sistema s) {
-		String tipo = this.lerTipo(s);
-		boolean extra = lerExtra(tipo);
-		System.out.println("Escolha uma data: ");
-		Data d = this.lerData(s);
-
-		System.out.println("Escolha um horário (hh:mm): ");
-		Horario horaInicio = this.lerHorario(s);
-		System.out.println("Escolha um horário (hh:mm): ");
-		Horario horaFim = this.lerHorario(s);
-		realizarReserva(s, tipo, extra, d, horaInicio, horaFim);
+	    String tipo = this.lerTipo(s);
+	    boolean extra;
+	    if (tipo.equalsIgnoreCase("e")) {
+	        extra = this.lerExtra("Deseja reservar uma estacao com monitor extra? (s/n): ");
+	    } else {
+	        extra = this.lerExtra("Deseja reservar sala com projetor? (s/n): ");
+	    }
+	    System.out.println("Escolha uma data: ");
+	    Data d = this.lerData(s);
+	    System.out.println("Escolha um horário (hh:mm): ");
+	    Horario horaInicio = this.lerHorario(s);
+	    System.out.println("Escolha um horário (hh:mm): ");
+	    Horario horaFim = this.lerHorario(s);
+	    realizarReserva(s, tipo, extra, d, horaInicio, horaFim);
 	}
 }

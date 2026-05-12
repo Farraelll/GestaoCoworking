@@ -37,7 +37,7 @@ public class Cliente {
 	}
 
 	public String toString() {
-		return this.nome + " (" + this.email + " CPF: " + this.cpf + ")";
+		return this.nome + " (" + this.email + " - CPF: " + this.cpf + ")";
 	}
 
 	public boolean equals(Object o) {

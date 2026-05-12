@@ -48,8 +48,8 @@ public class Espaco {
 
 		for (Reserva r : this.getReservas()) {
 			if (r.getData().equals(d)) {
-				if (!(inicio.compara(r.getInicio()) + fim.compara(r.getFim()) == 2 || inicio.compara(r.getInicio()) + fim.compara(r.getFim()) == -2)) return false;
-			}
+				if (inicio.compara(r.getFim()) < 0 && fim.compara(r.getInicio()) > 0) return false;
+        }
 		}
 		return true;
 	}

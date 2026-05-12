@@ -25,9 +25,9 @@ public class Estacao extends Espaco{
 
 	public String toString() {
 		if (monitorExtra) {
-			return super.toString() + " (Estação de Trabalho com Monitor Extra)";
+			return super.toString() + " (Estacao de Trabalho com Monitor Extra)";
 		}
-		return super.toString() + " (Estação de Trabalho sem Monitor Extra)";
+		return super.toString() + " (Estacao de Trabalho sem Monitor Extra)";
 	}
 
 	public double preco(Horario inicio, Horario fim) {

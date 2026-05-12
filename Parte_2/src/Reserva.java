@@ -55,7 +55,7 @@ public class Reserva {
 	public String toString() {
 		return  "* Local: " + espaco.toString() +
 				"\n* Data: " + data.toString() +
-				"\n* Horário: " + inicio.toString() + " - " + fim.toString() +
+				"\n* Horario: " + inicio.toString() + " - " + fim.toString() +
 				"\n* Cliente: " + cliente.toString() +
 				"\n* Valor: " + String.format("R$ %.2f", preco());
 	}

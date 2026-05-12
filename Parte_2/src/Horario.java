@@ -28,7 +28,7 @@ public class Horario {
 
     public int compara(Horario h2) {
         if (h2.getHora() == this.getHora()) {
-            return Integer.compare(this.getMinuto(), h2.getMinuto());
+            return Integer.signum(Integer.compare(this.getMinuto(), h2.getMinuto()));
         }
         if (this.getHora() > h2.getHora()) return 1;
         return -1;
