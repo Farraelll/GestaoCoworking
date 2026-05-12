@@ -47,7 +47,7 @@ public class Espaco {
 		if (!possuiAdicional() && extra) return false;
 
 		for (Reserva r : this.getReservas()) {
-			if (r.getData() == d) {
+			if (r.getData().equals(d)) {
 				if (!(inicio.compara(r.getInicio()) + fim.compara(r.getFim()) == 2 || inicio.compara(r.getInicio()) + fim.compara(r.getFim()) == -2)) return false;
 			}
 		}
