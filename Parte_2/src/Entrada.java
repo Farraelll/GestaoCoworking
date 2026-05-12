@@ -18,7 +18,7 @@ public class Entrada {
 	 */
 	public Entrada() {
 		try {
-			this.input = new Scanner(new FileInputStream("input2.txt")).useLocale(Locale.US);
+			this.input = new Scanner(new FileInputStream("input.txt")).useLocale(Locale.US);
 		} catch (FileNotFoundException e) {
 			this.input = new Scanner(System.in).useLocale(Locale.US);
 		}
