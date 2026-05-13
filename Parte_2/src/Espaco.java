@@ -1,68 +1,75 @@
 import java.util.ArrayList;
 
 public class Espaco {
-	protected String descricao;
-	protected static double valorHora, taxaLimpeza;
-	protected ArrayList<Reserva> reservas = new ArrayList<>();
+    protected String descricao;
+    protected static double valorHora, taxaLimpeza;
+    protected ArrayList<Reserva> reservas;
 
-	public String getDescricao() {
-		return descricao;
-	}
+    public Espaco(String descricao, double valorHora, double taxaLimpeza) {
+        this.setDescricao(descricao);
+        this.setValorHora(valorHora);
+        this.setTaxaLimpeza(taxaLimpeza);
+        this.reservas = new ArrayList<>();
+    }
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+    public String getDescricao() {
+        return descricao;
+    }
 
-	public static double getValorHora() {
-		return valorHora;
-	}
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 
-	public static void setValorHora(double valorHora) {
-		Espaco.valorHora = valorHora;
-	}
+    public double getValorHora() {
+        return valorHora;
+    }
 
-	public static double getTaxaLimpeza() {
-		return taxaLimpeza;
-	}
+    public void setValorHora(double valorHora) {
+        Espaco.valorHora = valorHora;
+    }
 
-	public static void setTaxaLimpeza(double taxaLimpeza) {
-		Espaco.taxaLimpeza = taxaLimpeza;
-	}
+    public double getTaxaLimpeza() {
+        return taxaLimpeza;
+    }
 
-	public ArrayList<Reserva> getReservas() {
-		return reservas;
-	}
+    public void setTaxaLimpeza(double taxaLimpeza) {
+        Espaco.taxaLimpeza = taxaLimpeza;
+    }
 
-	public Espaco setReservas(ArrayList<Reserva> reservas) {
-		this.reservas = reservas;
+    public ArrayList<Reserva> getReservas() {
+        return reservas;
+    }
 
-		return this;
-	}
+    public boolean disponivel(Data d, Horario inicio, Horario fim, boolean extra) {
+        if (this.possuiAdicionalExtra() != extra) return false;
 
-	public String toString() {
-		return descricao;
-	}
-
-	public boolean disponivel(Data d, Horario inicio, Horario fim, boolean extra) {
-		if (!possuiAdicional() && extra) return false;
-
-		for (Reserva r : this.getReservas()) {
-			if (r.getData().equals(d)) {
-				if (inicio.compara(r.getFim()) < 0 && fim.compara(r.getInicio()) > 0) return false;
+        for (Reserva r : this.reservas) {
+            if (r.getData().compara(d)) {
+                Horario rIni = r.getInicio();
+                Horario rFim = r.getFim();
+                boolean naoConflita = fim.compara(rIni) <= 0 || rFim.compara(inicio) <= 0;
+                if (!naoConflita) return false;
+            }
         }
-		}
-		return true;
-	}
+        return true;
+    }
 
-	public void adicionarReserva(Reserva r) {
-		this.reservas.add(r);
-	}
+    public void adicionarReserva(Reserva r) {
+        this.reservas.add(r);
+    }
 
-	public double preco(Horario inicio, Horario fim) {
-		return ((getValorHora() * inicio.calcTempo(fim)) + getTaxaLimpeza());
-	}
+    public double preco(Horario inicio, Horario fim) {
+        int minutos = (fim.getHora() * 60 + fim.getMin()) - (inicio.getHora() * 60 + inicio.getMin());
+        int horas = (int) Math.ceil(minutos / 60.0);
+        return valorHora * horas + taxaLimpeza;
+    }
 
-	public boolean possuiAdicional() {
-		return true;
-	}
+    public boolean possuiAdicionalExtra() {
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return this.descricao;
+    }
 }

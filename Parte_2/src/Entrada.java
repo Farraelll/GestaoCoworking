@@ -7,97 +7,110 @@ import java.util.Scanner;
 /** Classe com as rotinas de entrada e saída do projeto
  * @authors Hilario Seibel Junior, Rafael Marques Silva e Ilanna dos Reis Cardoso
  */
-
 public class Entrada {
-	public Scanner input;
-	/** Construtor da classe Entrada
-	 * Se houver um arquivo input.txt na pasta em que o projeto está sendo executado,
-	 * define que o Scanner vai ler deste arquivo e não do teclado.
-	 * Se o arquivo não existir, define que o Scanner vai ler da entrada padrão (teclado)
-	 * NÃO ALTERE O CODIGO DESTE CONSTRUTOR!!!!
-	 */
-	public Entrada() {
-		try {
-			this.input = new Scanner(new FileInputStream("input2.txt")).useLocale(Locale.US);
-		} catch (FileNotFoundException e) {
-			this.input = new Scanner(System.in).useLocale(Locale.US);
-		}
-	}
+    public Scanner input;
 
-	public String lerLinha(String msg) {
-		System.out.print(msg);
-		String linha = this.input.nextLine();
+    /** Construtor da classe Entrada
+     * Se houver um arquivo input.txt na pasta em que o projeto está sendo executado,
+     * define que o Scanner vai ler deste arquivo e não do teclado.
+     * Se o arquivo não existir, define que o Scanner vai ler da entrada padrão (teclado)
+     * NÃO ALTERE O CODIGO DESTE CONSTRUTOR!!!!
+     */
+    public Entrada() {
+        try {
+            this.input = new Scanner(new FileInputStream("input2.txt")).useLocale(Locale.US);
+        } catch (FileNotFoundException e) {
+            this.input = new Scanner(System.in).useLocale(Locale.US);
+        }
+    }
+	
+    public String lerLinha(String msg) {
+        System.out.print(msg);
+        String linha = this.input.nextLine();
+		
+        while (linha.isEmpty() || linha.charAt(0) == '#') linha = this.input.nextLine();
+        return linha;
+    }
+	
+    public int lerInteiro(String msg) {
+        String linha = this.lerLinha(msg);
+        return Integer.parseInt(linha);
+    }
+	
+    private double lerDouble(String msg) {
+        String linha = this.lerLinha(msg);
+        return Double.parseDouble(linha);
+    }
+	
+    public Data lerData(Sistema s) {
+        System.out.println("Escolha uma data (dd/mm/aaaa):");
+        int dia = this.lerInteiro("Dia: ");
+        int mes = this.lerInteiro("Mês: ");
+        int ano = this.lerInteiro("Ano: ");
+        return new Data(dia, mes, ano);
+    }
 
-		while (linha.isEmpty() || linha.charAt(0) == '#') linha = this.input.nextLine();
-		return linha;
-	}
+    public Horario lerHorario(Sistema s) {
+        System.out.println("Escolha um horário (hh:mm):");
+        int hora = this.lerInteiro("Hora: ");
+        int min = this.lerInteiro("Minuto: ");
+        return new Horario(hora, min);
+    }
 
-	public int lerInteiro(String msg) {
-		String linha = this.lerLinha(msg);
-		return Integer.parseInt(linha);
-	}
+    public String lerTipo(Sistema s) {
+        String tipo = this.lerLinha("Deseja reservar uma sala ou estação de trabalho? (s/e): ");
+        
+        while (!tipo.equalsIgnoreCase("s") && !tipo.equalsIgnoreCase("e")) {
+            System.out.println("Opção inválida.");
+            tipo = this.lerLinha("Digite 's' para sala ou 'e' para estação de trabalho: ");
+        }
+        
+        return tipo;
+    }
 
-	public double lerDouble(String msg) {
-		String linha = this.lerLinha(msg);
+    public boolean lerExtra(String tipo) {
+        String resp;
+        if (tipo.equalsIgnoreCase("s")) {
+            resp = this.lerLinha("Deseja reservar sala com projetor? (s/n): ");
+        }
+        else {
+            resp = this.lerLinha("Deseja reservar estação de trabalho com monitor extra? (s/n): ");
+        }
+        return resp.equalsIgnoreCase("s");
+    }
 
-		return Double.parseDouble(linha);
-	}
+    public Cliente lerCliente(Sistema s) {
+        this.listarClientes(s);
+        String cpf = this.lerLinha("Digite o CPF do cliente: ");
+        return s.getCliente(cpf);
+    }
 
-	public Cliente lerCliente(Sistema s) {
-		String nome = this.lerLinha("Digite o nome: ");
-		String cpf = this.lerLinha("Digite o cpf: ");
-		String email = this.lerLinha("Digite o email: ");
-		String senha = this.lerLinha("Digite a senha: ");
-
-		return new Cliente(nome, cpf, email, senha);
-	}
-
-	public Data lerData(Sistema s) {
-		int dia = this.lerInteiro("Dia: ");
-		int mes = this.lerInteiro("Mês: ");
-		int ano = this.lerInteiro("Ano: ");
-
-		return new Data(dia, mes, ano);
-	}
-
-	public Horario lerHorario(Sistema s) {
-		int hora = lerInteiro("Hora: ");
-		int minuto = lerInteiro("Minuto: ");
-
-		return new Horario(hora, minuto);
-	}
-
-	private boolean lerExtra(String msg) {
-	    String linha = this.lerLinha(msg);
-	    return Character.toLowerCase(linha.charAt(0)) == 's';
-	}
-
-	public String lerTipo(Sistema s) {
-		return this.lerLinha("Deseja reservar uma sala ou estação de trabalho? (s/e): ");
-	}
-
-	public int menu() {
-		String msg = """
-		        *********************************
+    public void fechar() {
+        this.input.close();
+    }
+	
+    public int menu() {
+        String msg = """
+		        *********************
 		        Escolha uma opção:
 		        1) Cadastros
 		        2) Reservas
 		        0) Sair
 		        """;
 
-		int op = this.lerInteiro(msg);
+        int op = this.lerInteiro(msg);
 
-		while (op < 0 || op > 2) {
-			System.out.println("Opção inválida. Tente novamente: ");
-			op = this.lerInteiro(msg);
-		}
+        while (op < 0 || op > 2) {
+            System.out.println("Opção inválida. Tente novamente: ");
+            op = this.lerInteiro(msg);
+        }
 
-		return op;
-	}
+        return op;
+    }
 
-	public void menuCadastro(Sistema s) {
-		String msg = """
-		        *********************************
+    public void menuCadastro(Sistema s) {
+        String msg = """
+		        *********************
 		        Escolha uma opção:
 		        1) Ver clientes
 		        2) Ver salas
@@ -108,38 +121,38 @@ public class Entrada {
 		        0) Voltar
 		        """;
 
-		int op = this.lerInteiro(msg);
+        int op = this.lerInteiro(msg);
 
-		while (op < 0 || op > 6) {
-			System.out.println("Opção inválida. Tente novamente: ");
-			op = this.lerInteiro(msg);
-		}
+        while (op < 0 || op > 6) {
+            System.out.println("Opção inválida. Tente novamente: ");
+            op = this.lerInteiro(msg);
+        }
 
-		switch (op) {
-			case 1:
-				this.listarClientes(s);
-				break;
-			case 2:
-				this.listarSalas(s);
-				break;
-			case 3:
-				this.listarEstacoes(s);
-				break;
-			case 4:
-				this.cadastrarCliente(s);
-				break;
-			case 5:
-				this.cadastrarSala(s);
-				break;
-			case 6:
-				this.cadastrarEstacao(s);
-				break;
-		}
-	}
+        switch (op) {
+            case 1:
+                this.listarClientes(s);
+                break;
+            case 2:
+                this.listarSalas(s);
+                break;
+            case 3:
+                this.listarEstacoes(s);
+                break;
+            case 4:
+                this.cadastrarCliente(s);
+                break;
+            case 5:
+                this.cadastrarSala(s);
+                break;
+            case 6:
+                this.cadastrarEstacao(s);
+                break;
+        }
+    }
 
-	public void menuReserva(Sistema s) {
-		String msg = """
-		        *********************************
+    public void menuReservas(Sistema s) {
+        String msg = """
+		        *********************
 		        Escolha uma opção:
 		        1) Ver reservas
 		        2) Ver reservas por data
@@ -150,250 +163,215 @@ public class Entrada {
 		        0) Voltar
 		        """;
 
-		int op = lerInteiro(msg);
-		while (op < 0 || op > 6) {
-			System.out.println("Opção inválida. Tente novamente: ");
-			op = this.lerInteiro(msg);
-		}
-		switch (op) {
-			case 1:
-				this.listarReservas(s);
-				break;
-			case 2:
-				this.listarReservasData(s);
-				break;
-			case 3:
-				this.listarReservasCliente(s);
-				break;
-			case 4:
-				this.reservarData(s);
-				break;
-			case 5:
-				this.reservarTurno(s);
-				break;
-			case 6:
-				this.reservarHorario(s);
-				break;
-		}
-	}
+        int op = this.lerInteiro(msg);
 
-	public Sistema criarSistema() {
-		System.out.println("Iniciando o sistema...");
-		double valorHora = this.lerDouble("Digite o valor por hora para usar um espaço: R$ ");
-		double taxaLimpeza = this.lerDouble("Digite a taxa de limpeza: R$ ");
-		double precoProjetor = this.lerDouble("Digite o valor extra para usar o projetor: R$ ");
-		double precoMonitor = this.lerDouble("Digite o valor para usar o monitor extra: R$ ");
+        while (op < 0 || op > 6) {
+            System.out.println("Opção inválida. Tente novamente: ");
+            op = this.lerInteiro(msg);
+        }
 
-		return new Sistema(valorHora, taxaLimpeza, precoProjetor, precoMonitor);
-	}
+        switch (op) {
+            case 1:
+                this.listarReservas(s);
+                break;
+            case 2:
+                this.listarReservasData(s);
+                break;
+            case 3:
+                this.listarReservasCliente(s);
+                break;
+            case 4:
+                this.reservarData(s);
+                break;
+            case 5:
+                this.reservarTurno(s);
+                break;
+            case 6:
+                this.reservarHorario(s);
+                break;
+        }
+    }
 
-	public void listarClientes(Sistema s) {
-		System.out.println("*********************************");
-		ArrayList<Cliente> clientes = s.getClientes();
+    public Sistema criarSistema() {
+        System.out.println("Iniciando o sistema...");
+        double valorHora = this.lerDouble("Digite o valor por hora para usar um espaço: R$ ");
+        double taxaLimpeza = this.lerDouble("Digite a taxa de limpeza: R$ ");
+        double precoProjetor = this.lerDouble("Digite o valor extra para usar o projetor: R$ ");
+        double precoMonitor = this.lerDouble("Digite o valor para usar o monitor extra: R$ ");
 
-		if (clientes.isEmpty()) {
-			System.out.println("Nenhum cliente cadastrado.");
-		}
-		else {
-			System.out.println("Clientes cadastrados:");
-			for (Cliente c : clientes) {
-				System.out.println(c);
-			}
-		}
-	}
+        return new Sistema(valorHora, taxaLimpeza, precoProjetor, precoMonitor);
+    }
 
-	public void listarSalas(Sistema s) {
-		System.out.println("*********************************");
-		ArrayList<Espaco> salas = s.getSalas();
+    public void listarClientes(Sistema s) {
+        System.out.println("*********************************");
+        ArrayList<Cliente> clientes = s.getClientes();
 
-		if (salas.isEmpty()) {
-			System.out.println("Nenhuma sala cadastrada.");
-		}
-		else {
-			System.out.println("Salas cadastradas:");
-			for (Espaco sl : salas) {
-				System.out.println(sl);
-			}
-		}
-	}
+        if (clientes.isEmpty()) {
+            System.out.println("Nenhum cliente cadastrado.");
+        }
+        else {
+            System.out.println("Clientes cadastrados:");
+            for (Cliente c : clientes) {
+                System.out.println(c);
+            }
+        }
+    }
 
-	public void listarEstacoes(Sistema s) {
-		System.out.println("*********************************");
-		ArrayList<Espaco> estacoes = s.getEstacoes();
+    public void listarSalas(Sistema s) {
+        System.out.println("*********************************");
+        ArrayList<Espaco> salas = s.getSalas();
 
-		if(estacoes.isEmpty()) {
-			System.out.println("Nenhuma estação cadastrada");
-		}
-		else {
-			System.out.println("Estacoes de Trabalho cadastradas:");
-			for (Espaco e : estacoes) {
-				System.out.println(e);
-			}
-		}
+        if (salas.isEmpty()) {
+            System.out.println("Nenhuma sala cadastrada.");
+        }
+        else {
+            System.out.println("Salas cadastradas:");
+            for (Espaco sala : salas) {
+                System.out.println(sala);
+            }
+        }
+    }
 
-	}
+    public void listarEstacoes(Sistema s) {
+        System.out.println("*********************************");
+        ArrayList<Espaco> estacoes = s.getEstacoes();
 
-	public void listarReservas(Sistema s) {
-		ArrayList<Reserva> reservas = s.getReservas();
+        if (estacoes.isEmpty()) {
+            System.out.println("Nenhuma estação de trabalho cadastrada.");
+        }
+        else {
+            System.out.println("Estações de Trabalho cadastradas:");
+            for (Espaco e : estacoes) {
+                System.out.println(e);
+            }
+        }
+    }
 
-		if(reservas.isEmpty()) {
-			System.out.println("Nenhuma reserva cadastrada");
-		} else {
-			System.out.println("Reservas cadastradas:");
-			for (Reserva r : reservas) {
-				System.out.println("Reserva: ");
-				System.out.println(r);
-			}
-		}
+    public void listarReservas(Sistema s) {
+        ArrayList<Reserva> reservas = s.getReservas();
 
-	}
+        if (reservas.isEmpty()) {
+            System.out.println("Nenhuma reserva cadastrada.");
+        }
+        else {
+            System.out.println("Reservas cadastradas:");
+            for (Reserva r : reservas) {
+                System.out.println(r);
+            }
+        }
+    }
 
-	public void listarReservasData(Sistema s) {
-		System.out.println("Escolha uma data (dd/mm/aaaa): ");
-		Data d = this.lerData(s);
-		ArrayList<Reserva> reservas = s.getReservas(d);
+    public void listarReservasData(Sistema s) {
+        Data d = this.lerData(s);
+        ArrayList<Reserva> reservas = s.getReservas(d);
 
-		if(reservas.isEmpty()) {
-			System.out.println("Nenhuma reserva cadastrada");
-		} else {
-			System.out.println("Reservas cadastradas nesta data:");
-			for (Reserva r : reservas) {
-				System.out.println("Reserva: ");
-				System.out.println(r);
-			}
-		}
-	}
+        if (reservas.isEmpty()) {
+            System.out.println("Nenhuma reserva cadastrada nesta data.");
+        }
+        else {
+            System.out.println("Reservas cadastradas nesta data:");
+            for (Reserva r : reservas) {
+                System.out.println(r);
+            }
+        }
+    }
 
-	public void listarReservasCliente(Sistema s) {
-	    this.listarClientes(s);
-	    String cpf = this.lerLinha("Digite o CPF do cliente: ");
-	    Cliente c = s.getCliente(cpf);
+    public void listarReservasCliente(Sistema s) {
+        Cliente c = this.lerCliente(s);
+        if (c == null) {
+            System.out.println("Cliente não encontrado.");
+            return;
+        }
+        ArrayList<Reserva> reservas = s.getReservas(c);
 
-	    if (c == null) {
-	        System.out.println("Cliente não encontrado.");
-	        return;
-	    }
-	    ArrayList<Reserva> reservas = s.getReservas(c);
+        if (reservas.isEmpty()) {
+            System.out.println("Nenhuma reserva cadastrada para este cliente.");
+        }
+        else {
+            System.out.println("Reservas cadastradas para este cliente:");
+            for (Reserva r : reservas) {
+                System.out.println(r);
+            }
+        }
+    }
 
-	    if (reservas.isEmpty()) {
-	        System.out.println("Nenhuma reserva cadastrada para este cliente.");
-	    } else {
-	        System.out.println("Reservas cadastradas para este cliente:");
-	        for (Reserva r : reservas) {
-	            System.out.println("Reserva: ");
-	            System.out.println(r);
-	        }
-	    }
-	}
+    public void cadastrarCliente(Sistema s) {
+        this.listarClientes(s);
 
-	public void cadastrarCliente(Sistema s) {
-		this.listarClientes(s);
+        System.out.println("Cadastrando cliente.");
+        String nome = this.lerLinha("Digite o nome do cliente: ");
+        String cpf = this.lerLinha("Digite o CPF do cliente: ");
+        String email = this.lerLinha("Digite o email do cliente: ");
+        String senha = this.lerLinha("Digite a senha do cliente: ");
 
-		System.out.println("Cadastrando cliente.");
-		Cliente c = lerCliente(s);
+        if (s.getCliente(cpf) == null) {
+            s.cadastrar(new Cliente(nome, cpf, email, senha));
+        }
+        else {
+            System.out.println("CPF já cadastrado. Cliente não inserido.");
+        }
+    }
 
-		if (s.getCliente(c.getCpf()) == null) {
-			s.cadastrar(c);
-		}
-		else {
-			System.out.println("CPF já cadastrado. Cliente não inserido.");
-		}
-	}
+    public void cadastrarSala(Sistema s) {
+        this.listarSalas(s);
 
-	public void cadastrarSala(Sistema s) {
-		this.listarSalas(s);
+        System.out.println("Cadastrando sala.");
+        String nome = this.lerLinha("Digite o nome da sala: ");
+        String resp = this.lerLinha("Possui projetor? (s/n): ");
+        boolean projetor = resp.equalsIgnoreCase("s");
 
-		System.out.println("Cadastrando sala.");
-		String descricao = this.lerLinha("Digite o nome da sala: ");
-		boolean extra = this.lerExtra("Possui projetor? (s/n): ");
+        Sala sala = new Sala(nome, s.getValorHora(), s.getTaxaLimpeza(), projetor, s.getPrecoProjetor());
+        s.cadastrar(sala);
+    }
 
-		s.cadastrar(new Sala(descricao, extra));
-	}
+    public void cadastrarEstacao(Sistema s) {
+        this.listarEstacoes(s);
 
-	public void cadastrarEstacao(Sistema s) {
-		this.listarEstacoes(s);
+        System.out.println("Cadastrando estação de trabalho.");
+        String nome = this.lerLinha("Digite o nome da estação de trabalho: ");
+        String resp = this.lerLinha("Possui monitor extra? (s/n): ");
+        boolean monitor = resp.equalsIgnoreCase("s");
 
-		System.out.println("Cadastrando estação");
-		String descricao = this.lerLinha("Digite o nome da estação de trabalho: ");
-		boolean extra = this.lerExtra("Possui monitor extra? (s/n): ");
+        Estacao est = new Estacao(nome, s.getValorHora(), s.getTaxaLimpeza(), monitor, s.getPrecoMonitor());
+        s.cadastrar(est);
+    }
 
-		s.cadastrar(new Estacao(descricao, extra));
-	}
+    public void reservarData(Sistema s) {
+        String tipo = this.lerTipo(s);
+        boolean extra = this.lerExtra(tipo);
+        Data d = this.lerData(s);
+        Cliente c = this.lerCliente(s);
 
-	private void realizarReserva(Sistema s, String tipo, boolean extra, Data d) {
-		System.out.println("*********************************");
-		this.listarClientes(s);
-		String cpf = this.lerLinha("Digite o CPF do cliente: ");
-		if (s.reservar(tipo, d, s.getCliente(cpf), extra)) {
-			System.out.println("Reserva realizada com sucesso!");
-		} else {
-			System.out.println("Reserva não realizada.");
-		}
-	}
+        boolean disp = s.reservar(tipo, d, c, extra);
 
-	private void realizarReserva(Sistema s, String tipo, boolean extra, Data d, String turno) {
-		System.out.println("*********************************");
-		this.listarClientes(s);
-		String cpf = this.lerLinha("Digite o CPF do cliente: ");
-		if (s.reservar(tipo, d, turno, s.getCliente(cpf), extra)) {
-			System.out.println("Reserva realizada com sucesso!");
-		} else {
-			System.out.println("Reserva não realizada.");
-		}
-	}
+        if (disp) System.out.println("Reserva realizada com sucesso!");
+        else System.out.println("Reserva não realizada.");
+    }
 
-	private void realizarReserva(Sistema s, String tipo, boolean extra, Data d, Horario inicio, Horario fim) {
-		System.out.println("*********************************");
-		this.listarClientes(s);
-		String cpf = this.lerLinha("Digite o CPF do cliente: ");
-		if (s.reservar(tipo, d, inicio, fim, s.getCliente(cpf), extra)) {
-			System.out.println("Reserva realizada com sucesso!");
-		} else {
-			System.out.println("Reserva não realizada.");
-		}
-	}
+    public void reservarTurno(Sistema s) {
+        String tipo = this.lerTipo(s);
+        boolean extra = this.lerExtra(tipo);
+        Data d = this.lerData(s);
+        String turno = this.lerLinha("Escolha um turno: matutino, vespertino ou noturno (m/v/n): ");
+        Cliente c = this.lerCliente(s);
+        
+        boolean disp = s.reservar(tipo, d, turno, c, extra);
 
-	public void reservarData(Sistema s) {
-	    String tipo = this.lerTipo(s);
-	    boolean extra;
-	    if (tipo.equalsIgnoreCase("e")) {
-	        extra = this.lerExtra("Deseja reservar uma estacao com monitor extra? (s/n): ");
-	    } else {
-	        extra = this.lerExtra("Deseja reservar sala com projetor? (s/n): ");
-	    }
-	    System.out.println("Escolha uma data: ");
-	    Data d = lerData(s);
-	    realizarReserva(s, tipo, extra, d);
-	}
+        if (disp) System.out.println("Reserva realizada com sucesso!");
+        else System.out.println("Reserva não realizada.");
+    }
 
-	public void reservarTurno(Sistema s) {
-	    String tipo = this.lerTipo(s);
-	    boolean extra;
-	    if (tipo.equalsIgnoreCase("e")) {
-	        extra = this.lerExtra("Deseja reservar uma estacao com monitor extra? (s/n): ");
-	    } else {
-	        extra = this.lerExtra("Deseja reservar sala com projetor? (s/n): ");
-	    }
-	    System.out.println("Escolha uma data: ");
-	    Data d = this.lerData(s);
-	    String turno = this.lerLinha("Escolha um turno: matutino, vespertino ou noturno (m/v/n): ");
-	    realizarReserva(s, tipo, extra, d, turno);
-	}
+    public void reservarHorario(Sistema s) {
+        String tipo = this.lerTipo(s);
+        boolean extra = this.lerExtra(tipo);
+        Data d = this.lerData(s);
+        Horario inicio = this.lerHorario(s);
+        Horario fim = this.lerHorario(s);
+        Cliente c = this.lerCliente(s);
 
-	public void reservarHorario(Sistema s) {
-	    String tipo = this.lerTipo(s);
-	    boolean extra;
-	    if (tipo.equalsIgnoreCase("e")) {
-	        extra = this.lerExtra("Deseja reservar uma estacao com monitor extra? (s/n): ");
-	    } else {
-	        extra = this.lerExtra("Deseja reservar sala com projetor? (s/n): ");
-	    }
-	    System.out.println("Escolha uma data: ");
-	    Data d = this.lerData(s);
-	    System.out.println("Escolha um horário (hh:mm): ");
-	    Horario horaInicio = this.lerHorario(s);
-	    System.out.println("Escolha um horário (hh:mm): ");
-	    Horario horaFim = this.lerHorario(s);
-	    realizarReserva(s, tipo, extra, d, horaInicio, horaFim);
-	}
+        boolean disp = s.reservar(tipo, d, inicio, fim, c, extra);
+
+        if (disp) System.out.println("Reserva realizada com sucesso!");
+        else System.out.println("Reserva não realizada.");
+    }
 }

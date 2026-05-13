@@ -1,5 +1,10 @@
 public class Horario {
-    private int hora, minuto;
+    private int hora, min;
+
+    public Horario(int hora, int min) {
+        this.setHora(hora);
+        this.setMin(min);
+    }
 
     public int getHora() {
         return hora;
@@ -9,38 +14,24 @@ public class Horario {
         this.hora = hora;
     }
 
-    public int getMinuto() {
-        return minuto;
+    public int getMin() {
+        return min;
     }
 
-    public void setMinuto(int minuto) {
-        this.minuto = minuto;
-    }
-
-    public Horario(int hora, int minuto) {
-        setHora(hora);
-        setMinuto(minuto);
-    }
-
-    public String toString() {
-    return String.format("%02d:%02d", hora, minuto);
+    public void setMin(int min) {
+        this.min = min;
     }
 
     public int compara(Horario h2) {
-        if (h2.getHora() == this.getHora()) {
-            return Integer.signum(Integer.compare(this.getMinuto(), h2.getMinuto()));
-        }
-        if (this.getHora() > h2.getHora()) return 1;
-        return -1;
-}
+        int t1 = this.hora * 60 + this.min;
+        int t2 = h2.hora * 60 + h2.min;
+        if (t1 < t2) return -1;
+        if (t1 > t2) return 1;
+        return 0;
+    }
 
-    public int calcTempo(Horario h2) {
-        if (this.getHora() == h2.getHora()) {
-            return 1;
-        }
-        if (h2.getMinuto() != 0) {
-            return h2.getHora() - this.getHora() + 1;
-        }
-        return h2.getHora() - this.getHora();
+    @Override
+    public String toString() {
+        return String.format("%02d:%02d", this.hora, this.min);
     }
 }

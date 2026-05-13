@@ -1,66 +1,68 @@
 public class Reserva {
-	private Data data;
-	private Horario inicio, fim;
-	private Espaco espaco;
-	private Cliente cliente;
+    private Data d;
+    private Horario inicio, fim;
+    private Espaco esp;
+    private Cliente cli;
 
-	public Data getData() {
-		return data;
-	}
+    public Reserva(Data d, Horario inicio, Horario fim, Espaco esp, Cliente cli) {
+        this.setData(d);
+        this.setInicio(inicio);
+        this.setFim(fim);
+        this.setEspaco(esp);
+        this.setCliente(cli);
+    }
 
-	public void setData(Data data) {
-		this.data = data;
-	}
+    public Data getData() {
+        return d;
+    }
 
-	public Horario getInicio() {
-		return inicio;
-	}
+    public void setData(Data d) {
+        this.d = d;
+    }
 
-	public void setInicio(Horario inicio) {
-		this.inicio = inicio;
-	}
+    public Horario getInicio() {
+        return inicio;
+    }
 
-	public Horario getFim() {
-		return fim;
-	}
+    public void setInicio(Horario inicio) {
+        this.inicio = inicio;
+    }
 
-	public void setFim(Horario fim) {
-		this.fim = fim;
-	}
+    public Horario getFim() {
+        return fim;
+    }
 
-	public Espaco getEspaco() {
-		return espaco;
-	}
+    public void setFim(Horario fim) {
+        this.fim = fim;
+    }
 
-	public void setEspaco(Espaco espaco) {
-		this.espaco = espaco;
-	}
+    public Espaco getEspaco() {
+        return esp;
+    }
 
-	public Cliente getCliente() {
-		return cliente;
-	}
+    public void setEspaco(Espaco esp) {
+        this.esp = esp;
+    }
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
+    public Cliente getCliente() {
+        return cli;
+    }
 
-	public Reserva(Data data, Horario inicio, Horario fim, Espaco espaco, Cliente cliente) {
-		this.setData(data);
-		this.setInicio(inicio);
-		this.setFim(fim);
-		this.setEspaco(espaco);
-		this.setCliente(cliente);
-	}
+    public void setCliente(Cliente cli) {
+        this.cli = cli;
+    }
 
-	public String toString() {
-		return  "* Local: " + espaco.toString() +
-				"\n* Data: " + data.toString() +
-				"\n* Horario: " + inicio.toString() + " - " + fim.toString() +
-				"\n* Cliente: " + cliente.toString() +
-				"\n* Valor: " + String.format("R$ %.2f", preco());
-	}
+    public double preco() {
+        return this.esp.preco(this.inicio, this.fim);
+    }
 
-	public double preco() {
-		return espaco.preco(inicio, fim);
-	}
+    @Override
+    public String toString() {
+        return "Reserva:\n"
+                + "* Local: " + this.esp + "\n"
+                + "* Data: " + this.d + "\n"
+                + "* Horario: " + this.inicio + " - " + this.fim + "\n"
+                + "* Cliente: " + this.cli + "\n"
+                + String.format("* Valor: R$ %.2f", this.preco());
+    }
 }

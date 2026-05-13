@@ -1,43 +1,44 @@
-public class Estacao extends Espaco{
-	private boolean monitorExtra;
-	private static double precoMonitor;
+public class Estacao extends Espaco {
+    private boolean monitorExtra;
+    private static double precoMonitor;
 
-	public Estacao(String nome, boolean monitor) {
-		this.setDescricao(nome);
-		this.setMonitorExtra(monitor);
-	}
+    public Estacao(String descricao, double valorHora, double taxaLimpeza, boolean monitorExtra, double precoMonitor) {
+        super(descricao, valorHora, taxaLimpeza);
+        this.setMonitorExtra(monitorExtra);
+        this.setPrecoMonitor(precoMonitor);
+    }
 
-	public boolean isMonitorExtra() {
-		return monitorExtra;
-	}
+    public boolean getMonitorExtra() {
+        return monitorExtra;
+    }
 
-	public void setMonitorExtra(boolean monitorExtra) {
-		this.monitorExtra = monitorExtra;
-	}
+    public void setMonitorExtra(boolean monitorExtra) {
+        this.monitorExtra = monitorExtra;
+    }
 
-	public static double getPrecoMonitor() {
-		return precoMonitor;
-	}
+    public double getPrecoMonitor() {
+        return precoMonitor;
+    }
 
-	public static void setPrecoMonitor(double precoMonitor) {
-		Estacao.precoMonitor = precoMonitor;
-	}
+    public void setPrecoMonitor(double precoMonitor) {
+        Estacao.precoMonitor = precoMonitor;
+    }
 
-	public String toString() {
-		if (monitorExtra) {
-			return super.toString() + " (Estacao de Trabalho com Monitor Extra)";
-		}
-		return super.toString() + " (Estacao de Trabalho sem Monitor Extra)";
-	}
+    @Override
+    public double preco(Horario inicio, Horario fim) {
+        double valor = super.preco(inicio, fim);
+        if (this.monitorExtra) valor += precoMonitor;
+        return valor;
+    }
 
-	public double preco(Horario inicio, Horario fim) {
-	    if (this.monitorExtra) {
-	        return super.preco(inicio, fim) + precoMonitor;
-	    }
-	    return super.preco(inicio, fim);
-	}
+    @Override
+    public boolean possuiAdicionalExtra() {
+        return this.monitorExtra;
+    }
 
-	public boolean possuiAdicional() {
-		return this.monitorExtra;
-	}
+    @Override
+    public String toString() {
+        if (this.monitorExtra) return this.descricao + " (Estacao de Trabalho com Monitor Extra)";
+        return this.descricao + " (Estacao de Trabalho sem Monitor Extra)";
+    }
 }
